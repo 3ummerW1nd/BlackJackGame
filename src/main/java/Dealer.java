@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Dealer extends Player{
 
     boolean hide = true;
@@ -12,20 +14,20 @@ public class Dealer extends Player{
     }
 
     @Override
-    public void showHand(GameWindow gameWindow) {
+    public void showHand(JTextArea jTextArea) {
         //System.out.print("现在" + getName() + "拥有的手牌为：");
-        gameWindow.getTextArea1().setText("现在" + getName() + "拥有的手牌为：\n");
+        jTextArea.setText("现在" + getName() + "拥有的手牌为：\n");
         if(hide) {
             for(int i = 0; i < getHand().size(); i ++) {
                 if(i == 0) {
-                    gameWindow.getTextArea1().append("暗牌 ");
+                    jTextArea.append("暗牌\n");
                 } else {
-                    gameWindow.getTextArea1().append(getHand().get(i).print());
+                    jTextArea.append(getHand().get(i).print());
                 }
             }
         } else {
             for(Card card : getHand()) {
-                gameWindow.getTextArea1().append(card.print());
+                jTextArea.append(card.print());
                 //card.print();
             }
         }
@@ -37,6 +39,12 @@ public class Dealer extends Player{
         getHand().get(0).print();
         System.out.println();
         hide = false;
+    }
+
+    public void drawTillSeventeen(Deck deck){
+        while(getScore() < 17) {
+            askForCard(deck);
+        }
     }
 
 }

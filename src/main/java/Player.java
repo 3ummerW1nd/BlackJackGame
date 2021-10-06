@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ public abstract class Player {
 
     public abstract String getName();
 
-    public abstract void showHand(GameWindow gameWindow);
+    public abstract void showHand(JTextArea jTextArea);
 
     public Player() {
         hand = new ArrayList<>();

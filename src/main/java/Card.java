@@ -24,7 +24,7 @@ public class Card {
     }
 
     public String print() {
-        return getSuit().toString() + getPoint().toString() + " ";
+        return getSuit().toString() + getPoint().toString() + "\n";
     }
 
 }

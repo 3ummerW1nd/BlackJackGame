@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 public class UserPlayer extends Player{
@@ -19,51 +20,39 @@ public class UserPlayer extends Player{
     }
 
     @Override
-    public void showHand(GameWindow gameWindow) {
-        gameWindow.getTextArea3().setText("现在" + getName() + "拥有的手牌为：\n");
+    public void showHand(JTextArea jTextArea) {
+        jTextArea.setText("现在" + getName() + "拥有的手牌为：\n");
 //        System.out.print("现在" + getName() + "拥有的手牌为：");
         for(Card card : getHand()) {
-            gameWindow.getTextArea3().append(card.print());
+            jTextArea.append(card.print());
         }
         //System.out.println();
     }
 
-    public int bet(GameWindow gameWindow) {
-        int theRoundChips = Integer.parseInt(gameWindow.scanFromTextField());
-        if(theRoundChips > chipAmount) {
-            System.out.println(getName() + "没有足够的筹码了！");
-            bet(gameWindow);
-        }
-        chipAmount -= theRoundChips;
-        return theRoundChips;
-    }
-
-    public void addBet(int chip) {
+    public void bet(Game game, int chip) {
+//        int theRoundChips = Integer.parseInt(gameWindow.scanFromTextField());
+//        if(theRoundChips > chipAmount) {
+//            System.out.println(getName() + "没有足够的筹码了！");
+//            bet(gameWindow);
+//        }
+//        chipAmount -= theRoundChips;
+//        return theRoundChips;
         chipAmount -= chip;
-    }
-
-    public void addChip(int chip) {
-        chipAmount += chip;
-    }
-
-    public void scanName(GameWindow gameWindow) {
-//        name = scan.nextLine();
-        name = gameWindow.scanFromTextField();
+        game.setChip(chip);
     }
 
     public int getChipAmount() {
         return chipAmount;
     }
 
-    public void setChipAmount(int chipAmount) {
-        this.chipAmount = chipAmount;
+    public void hit(Deck deck) {
+        askForCard(deck);
     }
 
-    public boolean choice(GameWindow gameWindow) {
-        int x = gameWindow.scanIntFromTextArea();
-        if(x == 1)
-            return true;
-        else
-            return false;
+    public void doubleDown(Game game) {
+        int chip = game.getChip();
+        chipAmount -= chip;
+        game.doubleChip();
     }
+
 }

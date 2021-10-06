@@ -3,7 +3,8 @@ import java.util.*;
 public class Deck {
     private Set<Card> cards = new HashSet<>();
 
-    public void getNewDeck() {
+    public void shuffle() {
+        cards = new HashSet<>();
         List<Point> points = Point.getAllPoints();
         List<Suit> suits = Suit.getAllSuits();
         for(Point point : points) {
