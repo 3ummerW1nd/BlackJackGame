@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+
+import static java.lang.Thread.sleep;
 
 public class RoomWindow {
     private Dealer dealer;
@@ -21,6 +24,7 @@ public class RoomWindow {
     private JPanel userHandJPanel;
     private JTextArea userPlayerHandTextArea;
     private JTextArea dealerHandTextArea;
+    private GameInformationWindow gameInformationWindow;
 
     public void initRoom() {
         dealer = new Dealer();
@@ -35,6 +39,26 @@ public class RoomWindow {
         hitButton.setEnabled(false);
         stayButton.setEnabled(false);
         doubleDownButton.setEnabled(false);
+        gameInformationWindow = new GameInformationWindow();
+        gameInformationWindow.getButton1().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int chips = Integer.parseInt(gameInformationWindow.getStatusTextField().getText());
+                if(chips > userPlayer.getChipAmount()) {
+                    GameInformationWindow alert = new GameInformationWindow();
+                    alert.show("余额不足", "下注失败");
+                } else {
+                    userPlayer.bet(game, chips);
+                    game.initGame();
+                    hitButton.setEnabled(true);
+                    stayButton.setEnabled(true);
+                    startGameButton.setEnabled(false);
+                    showHands();
+                    checkGameStatus(game.checkAfterInit());
+                }
+                gameInformationWindow.close();
+            }
+        });
         setOnClickListener();
     }
 
@@ -105,18 +129,13 @@ public class RoomWindow {
     }
 
     private void clickStartGameButton() {
-        int chip = askForChips();
+        deck = new Deck();
         game = new Game(dealer, userPlayer, deck);
-        userPlayer.bet(game, chip);
-        game.initGame();
-        hitButton.setEnabled(true);
-        stayButton.setEnabled(true);
-        startGameButton.setEnabled(false);
-        checkGameStatus(game.checkAfterInit());
+        gameInformationWindow.showEnable("请问您想要赌上几个筹码？", "");
     }
 
     private void clickQuitGameButton() {
-
+        jFrame.dispatchEvent(new WindowEvent(jFrame,WindowEvent.WINDOW_CLOSING));
     }
 
     private void clickShowChipButton() {
@@ -148,14 +167,9 @@ public class RoomWindow {
         }
     }
 
-    private int askForChips() {
-        //TODO:弹窗读入筹码数量
-        int chip = 0;
-        return chip;
-    }
-
     private void userWin(boolean blackJack) {
         gameOver();
+        userPlayer.addChipAmount((int) (game.getChip() * 1.5));
         if(blackJack)
             showStatus("你达成了BLACKJACK！你赢了");
         else
@@ -172,6 +186,7 @@ public class RoomWindow {
 
     private void draw() {
         gameOver();
+        userPlayer.addChipAmount(game.getChip());
         showStatus("平局了");
     }
 

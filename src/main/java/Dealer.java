@@ -9,14 +9,8 @@ public class Dealer extends Player{
     }
 
     @Override
-    public String getName() {
-        return "庄家";
-    }
-
-    @Override
     public void showHand(JTextArea jTextArea) {
-        //System.out.print("现在" + getName() + "拥有的手牌为：");
-        jTextArea.setText("现在" + getName() + "拥有的手牌为：\n");
+        jTextArea.setText("现在庄家拥有的手牌为：\n");
         if(hide) {
             for(int i = 0; i < getHand().size(); i ++) {
                 if(i == 0) {
@@ -31,14 +25,6 @@ public class Dealer extends Player{
                 //card.print();
             }
         }
-    }
-
-    public void showHideCard() {
-
-        System.out.print("庄家的暗牌是 ");
-        getHand().get(0).print();
-        System.out.println();
-        hide = false;
     }
 
     public void drawTillSeventeen(Deck deck){

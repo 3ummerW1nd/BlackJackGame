@@ -4,9 +4,6 @@ import java.util.List;
 
 public abstract class Player {
     private List<Card> hand;
-    private String name;
-
-    public abstract String getName();
 
     public abstract void showHand(JTextArea jTextArea);
 
@@ -44,13 +41,5 @@ public abstract class Player {
         Card card = deck.nextCard();
         Point point = card.getPoint();
         hand.add(card);
-    }
-
-    public void blackJack() {
-        System.out.print(getName()+"达成了blackJack！");
-        for(Card card : getHand()) {
-            card.print();
-        }
-        System.out.println();
     }
 }
