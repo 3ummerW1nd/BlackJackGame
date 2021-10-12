@@ -11,16 +11,8 @@ public class Card {
     return suit;
   }
 
-  public void setSuit(Suit suit) {
-    this.suit = suit;
-  }
-
   public Point getPoint() {
     return point;
-  }
-
-  public void setPoint(Point point) {
-    this.point = point;
   }
 
   public String print() {

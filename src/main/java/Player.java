@@ -39,7 +39,6 @@ public abstract class Player {
 
   public void askForCard(Deck deck) {
     Card card = deck.nextCard();
-    Point point = card.getPoint();
     hand.add(card);
   }
 }

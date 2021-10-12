@@ -46,8 +46,6 @@ public class Game {
       return GameStatus.DRAW;
     } else if (userPlayer.getScore() == 21) {
       return GameStatus.USERWINWITHBLACKJACK;
-    } else if (dealer.getScore() == 21) {
-      return GameStatus.DEALERWINWITHBLACKJACK;
     } else if (userPlayer.getScore() >= 17 && userPlayer.getChipAmount() >= chip) {
       return GameStatus.CANDOUBLE;
     }
@@ -67,6 +65,8 @@ public class Game {
     if (dealer.getScore() > 21) {
       return GameStatus.USERWIN;
     } else if (dealer.getScore() == 21) {
+      if (dealer.getHand().size() == 2)
+        return GameStatus.DEALERWINWITHBLACKJACK;
       return GameStatus.DEALERWIN;
     } else {
       if (userPlayer.getScore() > dealer.getScore()) {
@@ -78,72 +78,4 @@ public class Game {
       }
     }
   }
-
-  //    public boolean check() {
-  //        if(userPlayer.getScore() == 21 && dealer.getScore() == 21) {
-  //            dealer.showHideCard();
-  //            userPlayer.blackJack();
-  //            dealer.blackJack();
-  //            draw();
-  //            return false;
-  //        } else if(userPlayer.getScore() == 21){
-  //            userPlayer.blackJack();
-  //            userWin();
-  //            return false;
-  //        } else if(dealer.getScore() == 21) {
-  //            dealer.showHideCard();
-  //            dealer.blackJack();
-  //            userLoss();
-  //            return false;
-  //        } else if(userPlayer.getScore() >= 17 && userPlayer.getChipAmount() >= chip){
-  //            gameWindow.getTextArea2().append(userPlayer.getName() +
-  //            "你的点数目前大于17点，富贵险中求，请问是否加倍投注？\n");
-  ////            System.out.println(userPlayer.getName() +
-  ///"你的点数目前大于17点，富贵险中求，请问是否加倍投注？");
-  //            if(userPlayer.choice(gameWindow)) {
-  //                gameWindow.getTemp1().setText("");
-  //                userPlayer.addBet(chip);
-  //                chip *= 2;
-  //            }
-  //        }
-  //        return true;
-  //    }
-
-  //    public void playGame() {
-  //        gameWindow.getTextArea2().append("请问是否继续抽牌？\n");
-  ////        System.out.println("请问是否继续抽牌？");
-  //        while(userPlayer.choice(gameWindow)){
-  //            gameWindow.getTemp1().setText("");
-  //            userPlayer.askForCard(deck);
-  //            userPlayer.showHand(gameWindow);
-  //            if(userPlayer.getScore() > 21) {
-  //                userLoss();
-  //                return;
-  //            } else if(userPlayer.getScore() == 21) {
-  //                break;
-  //            }
-  //            gameWindow.getTextArea2().append("请问是否还要继续抽牌？\n");
-  ////            System.out.println("请问是否还要继续抽牌？");
-  //        }
-  //        dealer.showHideCard();
-  //        dealer.showHand(gameWindow);
-  //        while(dealer.getScore() < 17) {
-  //            dealer.askForCard(deck);
-  //            dealer.showHand(gameWindow);
-  //            if(dealer.getScore() > 21) {
-  //                userWin();
-  //                return;
-  //            } else if(dealer.getScore() == 21) {
-  //                break;
-  //            }
-  //        }
-  //        if(userPlayer.getScore() > dealer.getScore()) {
-  //            userWin();
-  //            return;
-  //        } else if(userPlayer.getScore() == dealer.getScore()){
-  //            draw();
-  //            return;
-  //        }
-  //        userLoss();
-  //    }
 }
