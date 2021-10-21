@@ -26,6 +26,15 @@ public class Dealer extends Player {
     }
   }
 
+  @Override
+  public String win(boolean blackJack) {
+    setHide(false);
+    if (blackJack)
+      return "庄家达成了BLACKJACK！庄家胜利";
+    else
+      return "庄家胜利";
+  }
+
   public void drawTillSeventeen(Deck deck) {
     while (getScore() < 17) {
       askForCard(deck);

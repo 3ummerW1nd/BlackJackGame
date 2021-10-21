@@ -28,17 +28,11 @@ public class Game {
     dealer.setHide(true);
     dealer.setHand(new ArrayList<>());
     userPlayer.setHand(new ArrayList<>());
-    //        System.out.println("您好" + userPlayer.getName() + ", 请输入你要赌上的筹码数量：");
-    //        gameWindow.getTextArea2().append("您好" + userPlayer.getName() + ",
-    //        请输入你要赌上的筹码数量：\n"); gameWindow.getTemp().setText("false"); chip =
-    //        userPlayer.bet(gameWindow);
     deck.shuffle();
     dealer.askForCard(deck);
+    userPlayer.askForCard(deck);
     dealer.askForCard(deck);
-    // dealer.showHand(gameWindow);
     userPlayer.askForCard(deck);
-    userPlayer.askForCard(deck);
-    // userPlayer.showHand(gameWindow);
   }
 
   public GameStatus checkAfterInit() {

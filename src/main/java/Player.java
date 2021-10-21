@@ -7,6 +7,8 @@ public abstract class Player {
 
   public abstract void showHand(JTextArea jTextArea);
 
+  public abstract String win(boolean blackJack);
+
   public Player() {
     hand = new ArrayList<>();
   }

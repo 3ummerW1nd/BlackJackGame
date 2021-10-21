@@ -58,63 +58,51 @@ public class RoomWindow {
 
   private void setOnClickListener() {
     hitButton.addActionListener(e -> {
-      clickHitButton();
+      userPlayer.hit(deck);
+      doubleDownButton.setEnabled(false);
+      dealGameStatus(game.checkAfterHit());
       showHands();
     });
     stayButton.addActionListener(e -> {
-      clickStayButton();
+      hitButton.setEnabled(false);
+      stayButton.setEnabled(false);
+      doubleDownButton.setEnabled(false);
+      dealer.drawTillSeventeen(deck);
+      dealer.setHide(false);
+      dealGameStatus(game.checkAfterStay());
+      startGameButton.setEnabled(true);
       showHands();
     });
     doubleDownButton.addActionListener(e -> {
-      clickDoubleDownButton();
+      userPlayer.doubleDown(game);
+      doubleDownButton.setEnabled(false);
       showHands();
     });
     startGameButton.addActionListener(e -> {
-      clickStartGameButton();
+      startGame();
       showHands();
     });
     quitGameButton.addActionListener(e -> {
-      clickQuitGameButton();
+      quitGame();
       showHands();
     });
     showChipButton.addActionListener(e -> {
-      clickShowChipButton();
+      showChip();
       showHands();
     });
   }
 
-  private void clickHitButton() {
-    userPlayer.hit(deck);
-    doubleDownButton.setEnabled(false);
-    dealGameStatus(game.checkAfterHit());
-  }
-
-  private void clickStayButton() {
-    hitButton.setEnabled(false);
-    stayButton.setEnabled(false);
-    doubleDownButton.setEnabled(false);
-    dealer.drawTillSeventeen(deck);
-    dealer.setHide(false);
-    dealGameStatus(game.checkAfterStay());
-    startGameButton.setEnabled(true);
-  }
-
-  private void clickDoubleDownButton() {
-    userPlayer.doubleDown(game);
-    doubleDownButton.setEnabled(false);
-  }
-
-  private void clickStartGameButton() {
+  private void startGame() {
     deck = new Deck();
     game = new Game(dealer, userPlayer, deck);
     gameInformationWindow.showEnable("请问您想要赌上几个筹码？", "");
   }
 
-  private void clickQuitGameButton() {
+  private void quitGame() {
     jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
   }
 
-  private void clickShowChipButton() {
+  private void showChip() {
     GameInformationWindow gameInformationWindow = new GameInformationWindow();
     gameInformationWindow.show("筹码信息", "你现在还有" + userPlayer.getChipAmount() + "个筹码");
   }
@@ -122,62 +110,35 @@ public class RoomWindow {
   private void dealGameStatus(GameStatus gameStatus) {
     switch (gameStatus) {
       case USERWIN:
-        userWin(false);
+        gameOver();
+        showStatus(userPlayer.win(false));
         break;
       case USERWINWITHBLACKJACK:
-        userWin(true);
+        gameOver();
+        showStatus(userPlayer.win(true));
         break;
       case DEALERWIN:
-        dealerWin(false);
+        gameOver();
+        showStatus(dealer.win(false));
         break;
       case DEALERWINWITHBLACKJACK:
-        dealerWin(true);
+        gameOver();
+        showStatus(dealer.win(true));
         break;
       case DRAW:
-        draw();
+        gameOver();
+        userPlayer.addChipAmount(game.getChip());
+        showStatus("平局了");
         break;
       case CANDOUBLE:
-        canDouble();
+        doubleDownButton.setEnabled(true);
         break;
     }
-  }
-
-  private void userWin(boolean blackJack) {
-    gameOver();
-    if (blackJack) {
-      userPlayer.addChipAmount((int) (game.getChip() * 2.5));
-      showStatus("你达成了BLACKJACK！你赢了");
-    } else {
-      userPlayer.addChipAmount(game.getChip() * 2);
-      showStatus("你赢了");
-    }
-  }
-
-  private void dealerWin(boolean blackJack) {
-    gameOver();
-    if (blackJack)
-      showStatus("庄家达成了BLACKJACK！你输了");
-    else
-      showStatus("你输了");
-  }
-
-  private void draw() {
-    gameOver();
-    userPlayer.addChipAmount(game.getChip());
-    showStatus("平局了");
-  }
-
-  private void canDouble() {
-    doubleDownButton.setEnabled(true);
-  }
-
-  private void show(Player player, JTextArea jTextArea) {
-    player.showHand(jTextArea);
   }
 
   private void showHands() {
-    show(userPlayer, userPlayerHandTextArea);
-    show(dealer, dealerHandTextArea);
+      userPlayer.showHand(userPlayerHandTextArea);
+      dealer.showHand(dealerHandTextArea);
   }
 
   private void showStatus(String status) {
@@ -186,7 +147,6 @@ public class RoomWindow {
   }
 
   private void gameOver() {
-    dealer.setHide(false);
     showHands();
     hitButton.setEnabled(false);
     stayButton.setEnabled(false);
