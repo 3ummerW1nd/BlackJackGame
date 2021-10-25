@@ -1,9 +1,7 @@
-import java.util.Scanner;
 import javax.swing.*;
 
 public class UserPlayer extends Player {
   private int chipAmount;
-  Scanner scan;
   private int chipThisGame;
 
   public void addChipAmount(int chipAmount) {
@@ -12,7 +10,6 @@ public class UserPlayer extends Player {
 
   public UserPlayer() {
     this.chipAmount = 100;
-    scan = new Scanner(System.in);
   }
 
   @Override

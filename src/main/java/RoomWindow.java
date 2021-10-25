@@ -45,12 +45,12 @@ public class RoomWindow {
       } else {
         gameInformationWindow.close();
         userPlayer.bet(game, chips);
-        game.initGame();
+        game.initGame(dealer, userPlayer, deck);
         hitButton.setEnabled(true);
         stayButton.setEnabled(true);
         startGameButton.setEnabled(false);
         showHands();
-        dealGameStatus(game.checkAfterInit());
+        dealGameStatus(game.checkAfterInit(userPlayer, dealer));
       }
     });
     setOnClickListener();
@@ -60,7 +60,7 @@ public class RoomWindow {
     hitButton.addActionListener(e -> {
       userPlayer.hit(deck);
       doubleDownButton.setEnabled(false);
-      dealGameStatus(game.checkAfterHit());
+      dealGameStatus(game.checkAfterHit(userPlayer));
       showHands();
     });
     stayButton.addActionListener(e -> {
@@ -69,14 +69,14 @@ public class RoomWindow {
       doubleDownButton.setEnabled(false);
       dealer.drawTillSeventeen(deck);
       dealer.setHide(false);
-      dealGameStatus(game.checkAfterStay());
+      dealGameStatus(game.checkAfterStay(userPlayer, dealer));
       startGameButton.setEnabled(true);
       showHands();
     });
     doubleDownButton.addActionListener(e -> {
       showHands();
       gameInformationWindow.show("你选择了加倍", "你将自动获得一张牌，之后自动选择停牌");
-      dealGameStatus(game.doubleDown());
+      dealGameStatus(game.doubleDown(userPlayer));
     });
     startGameButton.addActionListener(e -> {
       startGame();
@@ -94,7 +94,7 @@ public class RoomWindow {
 
   private void startGame() {
     deck = new Deck();
-    game = new Game(dealer, userPlayer, deck);
+    game = new Game();
     gameInformationWindow.showEnable("请问您想要赌上几个筹码？", "");
   }
 
@@ -137,14 +137,14 @@ public class RoomWindow {
         doubleDownButton.setEnabled(false);
         userPlayer.hit(deck);
         doubleDownButton.setEnabled(false);
-        GameStatus status = game.checkAfterHit();
+        GameStatus status = game.checkAfterHit(userPlayer);
         if(status == GameStatus.CONTINUE) {
           hitButton.setEnabled(false);
           stayButton.setEnabled(false);
           doubleDownButton.setEnabled(false);
           dealer.drawTillSeventeen(deck);
           dealer.setHide(false);
-          dealGameStatus(game.checkAfterStay());
+          dealGameStatus(game.checkAfterStay(userPlayer, dealer));
           startGameButton.setEnabled(true);
           showHands();
         } else {

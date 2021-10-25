@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 public class Dealer extends Player {
-  boolean hide = true;
+  private boolean hide = true;
 
   public void setHide(boolean hide) {
     this.hide = hide;

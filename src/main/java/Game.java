@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 
 public class Game {
-  private Dealer dealer;
-  private UserPlayer userPlayer;
-  private Deck deck;
   private int chip;
 
   public void setChip(int chip) {
@@ -18,13 +15,8 @@ public class Game {
     this.chip = this.chip * 2;
   }
 
-  public Game(Dealer dealer, UserPlayer userPlayer, Deck deck) {
-    this.dealer = dealer;
-    this.userPlayer = userPlayer;
-    this.deck = deck;
-  }
 
-  public void initGame() {
+  public void initGame(Dealer dealer, UserPlayer userPlayer, Deck deck) {
     dealer.setHide(true);
     dealer.setHand(new ArrayList<>());
     userPlayer.setHand(new ArrayList<>());
@@ -35,7 +27,7 @@ public class Game {
     userPlayer.askForCard(deck);
   }
 
-  public GameStatus checkAfterInit() {
+  public GameStatus checkAfterInit(UserPlayer userPlayer, Dealer dealer) {
     if (userPlayer.getScore() == 21 && dealer.getScore() == 21) {
       return GameStatus.DRAW;
     } else if (userPlayer.getScore() == 21) {
@@ -46,7 +38,7 @@ public class Game {
     return GameStatus.CONTINUE;
   }
 
-  public GameStatus checkAfterHit() {
+  public GameStatus checkAfterHit(UserPlayer userPlayer) {
     if (userPlayer.getScore() > 21) {
       return GameStatus.DEALERWIN;
     } else if (userPlayer.getScore() == 21) {
@@ -55,13 +47,13 @@ public class Game {
     return GameStatus.CONTINUE;
   }
 
-  public GameStatus doubleDown() {
+  public GameStatus doubleDown(UserPlayer userPlayer) {
     userPlayer.doubleDown();
     doubleChip();
     return GameStatus.AFTERDOUBLEDOWN;
   }
 
-  public GameStatus checkAfterStay() {
+  public GameStatus checkAfterStay(UserPlayer userPlayer, Dealer dealer) {
     if (dealer.getScore() > 21) {
       return GameStatus.USERWIN;
     } else if (dealer.getScore() == 21) {
