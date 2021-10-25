@@ -48,10 +48,7 @@ public class UserPlayer extends Player {
     askForCard(deck);
   }
 
-  public void doubleDown(Game game) {
-    int chip = game.getChip();
-    chipAmount -= chip;
-    game.doubleChip();
-
+  public void doubleDown() {
+    chipAmount -= chipThisGame;
   }
 }

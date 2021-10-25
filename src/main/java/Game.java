@@ -55,6 +55,12 @@ public class Game {
     return GameStatus.CONTINUE;
   }
 
+  public GameStatus doubleDown() {
+    userPlayer.doubleDown();
+    doubleChip();
+    return GameStatus.AFTERDOUBLEDOWN;
+  }
+
   public GameStatus checkAfterStay() {
     if (dealer.getScore() > 21) {
       return GameStatus.USERWIN;

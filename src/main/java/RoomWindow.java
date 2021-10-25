@@ -43,6 +43,7 @@ public class RoomWindow {
       } else if (chips <= 0) {
         new GameInformationWindow().show("下注失败", "下注筹码数必须大于0");
       } else {
+        gameInformationWindow.close();
         userPlayer.bet(game, chips);
         game.initGame();
         hitButton.setEnabled(true);
@@ -51,7 +52,6 @@ public class RoomWindow {
         showHands();
         dealGameStatus(game.checkAfterInit());
       }
-      gameInformationWindow.close();
     });
     setOnClickListener();
   }
@@ -74,9 +74,9 @@ public class RoomWindow {
       showHands();
     });
     doubleDownButton.addActionListener(e -> {
-      userPlayer.doubleDown(game);
-      doubleDownButton.setEnabled(false);
       showHands();
+      gameInformationWindow.show("你选择了加倍", "你将自动获得一张牌，之后自动选择停牌");
+      dealGameStatus(game.doubleDown());
     });
     startGameButton.addActionListener(e -> {
       startGame();
@@ -133,12 +133,31 @@ public class RoomWindow {
       case CANDOUBLE:
         doubleDownButton.setEnabled(true);
         break;
+      case AFTERDOUBLEDOWN:
+        doubleDownButton.setEnabled(false);
+        userPlayer.hit(deck);
+        doubleDownButton.setEnabled(false);
+        GameStatus status = game.checkAfterHit();
+        if(status == GameStatus.CONTINUE) {
+          hitButton.setEnabled(false);
+          stayButton.setEnabled(false);
+          doubleDownButton.setEnabled(false);
+          dealer.drawTillSeventeen(deck);
+          dealer.setHide(false);
+          dealGameStatus(game.checkAfterStay());
+          startGameButton.setEnabled(true);
+          showHands();
+        } else {
+          dealer.setHide(false);
+          dealGameStatus(status);
+        }
+        showHands();
     }
   }
 
   private void showHands() {
-      userPlayer.showHand(userPlayerHandTextArea);
-      dealer.showHand(dealerHandTextArea);
+    userPlayer.showHand(userPlayerHandTextArea);
+    dealer.showHand(dealerHandTextArea);
   }
 
   private void showStatus(String status) {
