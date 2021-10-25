@@ -116,7 +116,6 @@ public class RoomWindow {
   private void clickShowChipButton() {
     GameInformationWindow gameInformationWindow = new GameInformationWindow();
     gameInformationWindow.show("筹码信息", "你现在还有" + userPlayer.getChipAmount() + "个筹码");
-    showHands();
   }
 
   private void dealGameStatus(GameStatus gameStatus) {
