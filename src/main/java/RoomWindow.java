@@ -36,23 +36,6 @@ public class RoomWindow {
     stayButton.setEnabled(false);
     doubleDownButton.setEnabled(false);
     gameInformationWindow = new GameInformationWindow();
-    gameInformationWindow.getButton1().addActionListener(e -> {
-      int chips = Integer.parseInt(gameInformationWindow.getStatusTextField().getText());
-      if (chips > userPlayer.getChipAmount()) {
-        new GameInformationWindow().show("下注失败", "余额不足");
-      } else if (chips <= 0) {
-        new GameInformationWindow().show("下注失败", "下注筹码数必须大于0");
-      } else {
-        gameInformationWindow.close();
-        userPlayer.bet(game, chips);
-        game.initGame(dealer, userPlayer, deck);
-        hitButton.setEnabled(true);
-        stayButton.setEnabled(true);
-        startGameButton.setEnabled(false);
-        showHands();
-        dealGameStatus(game.checkAfterInit(userPlayer, dealer));
-      }
-    });
     setOnClickListener();
   }
 
@@ -105,6 +88,22 @@ public class RoomWindow {
   private void clickStartGameButton() {
     deck = new Deck();
     game = new Game();
+    gameInformationWindow.getButton1().addActionListener(e -> {
+      int chips = Integer.parseInt(gameInformationWindow.getStatusTextField().getText());
+      if (chips > userPlayer.getChipAmount()) {
+        new GameInformationWindow().show("下注失败", "余额不足");
+      } else if (chips <= 0) {
+        new GameInformationWindow().show("下注失败", "下注筹码数必须大于0");
+      } else {
+        gameInformationWindow.close();
+        userPlayer.bet(game, chips);
+        game.initGame(dealer, userPlayer, deck);
+        hitButton.setEnabled(true);
+        stayButton.setEnabled(true);
+        startGameButton.setEnabled(false);
+        showHands();dealGameStatus(game.checkAfterInit(userPlayer, dealer));
+      }
+    });
     gameInformationWindow.showEnable("请问您想要赌上几个筹码？", "");
     showHands();
   }
@@ -119,6 +118,7 @@ public class RoomWindow {
   }
 
   private void dealGameStatus(GameStatus gameStatus) {
+    System.out.println();
     switch (gameStatus) {
       case USERWIN:
         gameOver();

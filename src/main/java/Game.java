@@ -64,7 +64,12 @@ public class Game {
       if (userPlayer.getScore() > dealer.getScore()) {
         return GameStatus.USERWIN;
       } else if (userPlayer.getScore() == dealer.getScore()) {
-        return GameStatus.DRAW;
+        if(userPlayer.getHand().size() == dealer.getHand().size())
+          return GameStatus.DRAW;
+        else if(userPlayer.getHand().size() < dealer.getHand().size())
+          return GameStatus.USERWIN;
+        else
+          return GameStatus.DEALERWIN;
       } else {
         return GameStatus.DEALERWIN;
       }
