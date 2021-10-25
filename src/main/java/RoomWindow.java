@@ -58,53 +58,65 @@ public class RoomWindow {
 
   private void setOnClickListener() {
     hitButton.addActionListener(e -> {
-      userPlayer.hit(deck);
-      doubleDownButton.setEnabled(false);
-      dealGameStatus(game.checkAfterHit(userPlayer));
-      showHands();
+      clickHitButton();
     });
     stayButton.addActionListener(e -> {
-      hitButton.setEnabled(false);
-      stayButton.setEnabled(false);
-      doubleDownButton.setEnabled(false);
-      dealer.drawTillSeventeen(deck);
-      dealer.setHide(false);
-      dealGameStatus(game.checkAfterStay(userPlayer, dealer));
-      startGameButton.setEnabled(true);
-      showHands();
+      clickStayButton();
     });
     doubleDownButton.addActionListener(e -> {
-      showHands();
-      gameInformationWindow.show("你选择了加倍", "你将自动获得一张牌，之后自动选择停牌");
-      dealGameStatus(game.doubleDown(userPlayer));
+      clickDoubleDownButton();
     });
     startGameButton.addActionListener(e -> {
-      startGame();
+      clickStartGameButton();
       showHands();
     });
     quitGameButton.addActionListener(e -> {
-      quitGame();
-      showHands();
+      clickQuitGameButton();
     });
     showChipButton.addActionListener(e -> {
-      showChip();
-      showHands();
+      clickShowChipButton();
     });
   }
 
-  private void startGame() {
+  private void clickDoubleDownButton() {
+    showHands();
+    gameInformationWindow.show("你选择了加倍", "你将自动获得一张牌，之后自动选择停牌");
+    dealGameStatus(game.doubleDown(userPlayer));
+  }
+
+  private void clickStayButton() {
+    hitButton.setEnabled(false);
+    stayButton.setEnabled(false);
+    doubleDownButton.setEnabled(false);
+    dealer.drawTillSeventeen(deck);
+    dealer.setHide(false);
+    dealGameStatus(game.checkAfterStay(userPlayer, dealer));
+    startGameButton.setEnabled(true);
+    showHands();
+  }
+
+  private void clickHitButton() {
+    userPlayer.hit(deck);
+    doubleDownButton.setEnabled(false);
+    dealGameStatus(game.checkAfterHit(userPlayer));
+    showHands();
+  }
+
+  private void clickStartGameButton() {
     deck = new Deck();
     game = new Game();
     gameInformationWindow.showEnable("请问您想要赌上几个筹码？", "");
+    showHands();
   }
 
-  private void quitGame() {
+  private void clickQuitGameButton() {
     jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
   }
 
-  private void showChip() {
+  private void clickShowChipButton() {
     GameInformationWindow gameInformationWindow = new GameInformationWindow();
     gameInformationWindow.show("筹码信息", "你现在还有" + userPlayer.getChipAmount() + "个筹码");
+    showHands();
   }
 
   private void dealGameStatus(GameStatus gameStatus) {
@@ -139,14 +151,7 @@ public class RoomWindow {
         doubleDownButton.setEnabled(false);
         GameStatus status = game.checkAfterHit(userPlayer);
         if(status == GameStatus.CONTINUE) {
-          hitButton.setEnabled(false);
-          stayButton.setEnabled(false);
-          doubleDownButton.setEnabled(false);
-          dealer.drawTillSeventeen(deck);
-          dealer.setHide(false);
-          dealGameStatus(game.checkAfterStay(userPlayer, dealer));
-          startGameButton.setEnabled(true);
-          showHands();
+          clickStayButton();
         } else {
           dealer.setHide(false);
           dealGameStatus(status);
