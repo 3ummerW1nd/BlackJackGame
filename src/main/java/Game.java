@@ -32,7 +32,7 @@ public class Game {
       return GameStatus.DRAW;
     } else if (userPlayer.getScore() == 21) {
       return GameStatus.USERWINWITHBLACKJACK;
-    } else if (userPlayer.getScore() == 11 && userPlayer.getChipAmount() >= chip) {
+    } else if ((userPlayer.getScore() == 11) && userPlayer.getChipAmount() >= chip) {
       return GameStatus.CANDOUBLE;
     }
     return GameStatus.CONTINUE;

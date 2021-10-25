@@ -35,7 +35,6 @@ public class RoomWindow {
     hitButton.setEnabled(false);
     stayButton.setEnabled(false);
     doubleDownButton.setEnabled(false);
-    gameInformationWindow = new GameInformationWindow();
     setOnClickListener();
   }
 
@@ -88,6 +87,7 @@ public class RoomWindow {
   private void clickStartGameButton() {
     deck = new Deck();
     game = new Game();
+    gameInformationWindow = new GameInformationWindow();
     gameInformationWindow.getButton1().addActionListener(e -> {
       int chips = Integer.parseInt(gameInformationWindow.getStatusTextField().getText());
       if (chips > userPlayer.getChipAmount()) {
