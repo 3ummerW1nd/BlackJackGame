@@ -166,6 +166,7 @@ public class RoomWindow {
   }
 
   private void gameOver() {
+    dealer.setHide(false);
     showHands();
     hitButton.setEnabled(false);
     stayButton.setEnabled(false);
